@@ -2,7 +2,8 @@
 import yfinance as yf
 import pandas as pd
 
-
+# this is a test comment by michael
+nigga = 2025
 
 class StockDataDownloader:
     """
