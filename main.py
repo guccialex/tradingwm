@@ -2,8 +2,10 @@
 import yfinance as yf
 import pandas as pd
 
-# this is a test comment by michael
-nigga = 2025
+import snpmomentum;
+
+
+exit()
 
 class StockDataDownloader:
     """
@@ -23,12 +25,14 @@ class StockDataDownloader:
             period="60d",
             interval="5m"
         )
-       
         
         # # Convert the index to a standard DatetimeIndex (just in case)
         self.data.index = pd.to_datetime(self.data.index)
 
     def get_average_volume_over_last_n_days(self, date_start_str, n=14):
+
+        date_data = self.data[0]
+        print(date_data)
 
         date_data = self.data.loc[date_start_str]
         row = date_data.iloc[0]
@@ -72,6 +76,8 @@ class StockDataDownloader:
 if __name__ == "__main__":
     # Example usage
     downloader = StockDataDownloader(ticker="AAPL")
+
+    downloader.get_average_volume_over_last_n_days("2025-01-22")
     
     # Get the first bar of a specific date (e.g., January 23, 2025)
     day_start = downloader.get_day_start_interval("2025-01-22")
