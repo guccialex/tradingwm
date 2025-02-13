@@ -5,19 +5,21 @@ use std::io::{BufRead, BufReader, Result};
 
 
 
+use crate::convert_date_to_epoch;
 
-
+#[derive(Debug, Clone)]
 pub struct Date(i64);
 impl Date{
-
     fn from_string(string: &str) -> Date{
-        
+        let epochtime = convert_date_to_epoch(string).unwrap();
+        Date(epochtime)
     }
-
 }
+
 
 #[derive(Debug, Clone)]
 pub struct CompanySymbol(String);
+
 pub struct SNPData{
     currentcompanies: Vec<CompanySymbol>,
     replacements: Vec<(Date, CompanySymbol, CompanySymbol)>,
@@ -27,9 +29,15 @@ pub struct SNPData{
 pub fn main(){
 
     let starting_companies = read_starting_company_info();
-
     println!("Starting companies: {:?}", starting_companies);
 
+    let replacements = read_snp_replacements();
+    println!("Replacements: {:?}", replacements);
+
+    let snpdata = SNPData{
+        currentcompanies: starting_companies,
+        replacements: replacements,
+    };
 
 }
 
@@ -52,14 +60,14 @@ pub fn read_snp_replacements() -> Vec<(Date, CompanySymbol, CompanySymbol)> {
 
     //December 23, 2024	WDAY	Workday, Inc.	AMTM	Amentum	Market capitalization change.[4]
 
-    let rows = read_tab_separated_values_from_file("data/snpcurrent.txt").unwrap_or(Vec::new());
+    let rows = read_tab_separated_values_from_file("data/snpchanges.txt").unwrap_or(Vec::new());
     let mut toreturn = Vec::new();
     for row in rows {
         if row.len() < 4 {
             continue;
         }
 
-        let date = Date(row[0].parse().unwrap());
+        let date = Date::from_string(&row[0]);
         let added = CompanySymbol(row[1].clone());
         let removed = CompanySymbol(row[2].clone());
 
