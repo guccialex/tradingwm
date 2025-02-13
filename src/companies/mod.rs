@@ -49,12 +49,14 @@ impl SNPData {
             companies.insert(added);
         }
 
-        // let initial: HashSet<CompanySymbol> =
-        //     self.current_companies.iter().cloned().collect();
-        // let added_companies: HashSet<_> = companies.difference(&initial).collect();
-        // let removed_companies: HashSet<_> = initial.difference(&companies).collect();
-        // println!("Added companies: {:?}", added_companies);
-        // println!("Removed companies: {:?}", removed_companies);
+        let initial: HashSet<CompanySymbol> =
+            self.current_companies.iter().cloned().collect();
+        let added_companies: HashSet<_> = companies.difference(&initial).collect();
+        let removed_companies: HashSet<_> = initial.difference(&companies).collect();
+        println!("Added companies: {:?}", added_companies);
+        println!("");
+        println!("Removed companies: {:?}", removed_companies);
+        println!("");
 
         companies.into_iter().collect()
     }
